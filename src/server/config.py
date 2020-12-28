@@ -2,7 +2,7 @@ import os
 
 DEBUG = True
 
-PORT = int(os.environ.get('PORT', default='8080'))
+PORT = int(os.environ.get('PORT', default='8084'))
 
 SPACES_KEY = os.environ.get('SPACES_KEY')
 SPACES_SECRET = os.environ.get('SPACES_SECRET')

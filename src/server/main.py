@@ -12,7 +12,7 @@ app.config.debug = config.DEBUG
 app.config['MAX_CONTENT_LENGTH'] = config.MAX_FILE_SIZE
 
 
-@app.route('/files', methods=['POST'])
+@app.route('/api/v1/files', methods=['POST'])
 def upload_file():
     # check if the post request has the file part
     if 'file' not in request.files:
@@ -23,7 +23,9 @@ def upload_file():
     if file.filename == '' or not file:
         return '', 400
 
-    file_id = uuid.uuid4().hex
+    # just concatenate name and uuid,
+    # remove first 32 chars to get name
+    file_id = f'{uuid.uuid4().hex}{file.filename}'
     location = os.path.join(config.UPLOAD_FOLDER, file_id)
     file.save(location)
 
@@ -34,7 +36,7 @@ def upload_file():
     return jsonify({'file_id': file_id}), 200
 
 
-@app.route('/files/<file_id>', methods=['GET', 'DELETE'])
+@app.route('/api/v1/files/<file_id>', methods=['GET', 'DELETE'])
 def files(file_id):
     if request.method == 'GET':
         # Download file from Digital Ocean
